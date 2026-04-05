@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { min-height: 100vh; }
+.admin-wrap { max-width: 1100px; margin: 0 auto; padding: 30px 20px 60px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 36px; }
+.stat-card {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+.stat-card i { font-size: 2.4rem; margin-bottom: 8px; }
+.stat-card .val { font-size: 2rem; font-weight: 700; }
+.stat-card .lbl { font-size: 0.82rem; opacity: 0.65; margin-top: 4px; }
+.stat-card:nth-child(1) i { color: #ffe082; }
+.stat-card:nth-child(2) i { color: #80cbc4; }
+.stat-card:nth-child(3) i { color: #ef9a9a; }
+.stat-card:nth-child(4) i { color: #a5d6a7; }
+
+.admin-section { margin-bottom: 36px; }
+.admin-section h3 { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 16px; border-left: 4px solid var(--accent); padding-left: 14px; }
+
+.table-wrap { background: rgba(255,255,255,0.95); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+
+.action-btn {
+  padding: 5px 14px; border-radius: 50px; border: none; font-size: 0.8rem;
+  font-weight: 600; cursor: pointer; margin-right: 4px;
+}
+.btn-view { background: #e3f2fd; color: #1565c0; }
+.btn-del { background: #ffebee; color: #c62828; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <button class="nav-toggle" id="nav-toggle"><i class='bx bx-menu'></i></button>
+  <div class="nav-links" id="nav-links">
+    <a href="home.html"><i class='bx bxs-home'></i> Home</a>
+    <a href="admin.html" class="active"><i class='bx bxs-dashboard'></i> Admin</a>
+    <a href="flights.html"><i class='bx bxs-plane'></i> Flights</a>
+    <a href="login.html" onclick="AMS.logout();return false;"><i class='bx bx-log-out'></i> Logout</a>
+  </div>
+  <div class="nav-welcome" style="color:#ffe082;font-weight:700;">🛡 Admin Panel</div>
+</nav>
+
+<div class="admin-wrap">
+  <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:6px;">Admin Dashboard</h2>
+  <p style="opacity:0.6;margin-bottom:32px;">SkyWings Airline Management – Operations Overview</p>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card"><i class='bx bxs-plane-take-off'></i><div class="val">1,284</div><div class="lbl">Total Flights</div></div>
+    <div class="stat-card"><i class='bx bxs-group'></i><div class="val">48,923</div><div class="lbl">Passengers</div></div>
+    <div class="stat-card"><i class='bx bxs-x-circle'></i><div class="val">37</div><div class="lbl">Cancellations Today</div></div>
+    <div class="stat-card"><i class='bx bxs-wallet'></i><div class="val">₹2.4Cr</div><div class="lbl">Revenue This Month</div></div>
+  </div>
+
+  <!-- Flight Management -->
+  <div class="admin-section">
+    <h3><i class='bx bxs-plane'></i> Flight Management</h3>
+    <div class="table-wrap">
+      <table class="ams-table">
+        <thead>
+          <tr><th>Flight</th><th>Route</th><th>Departure</th><th>Status</th><th>Passengers</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SW-201</td><td>BOM → DEL</td><td>06:00 Jun 15</td><td><span class="badge badge-upcoming">On Time</span></td><td>148/180</td><td><button class="action-btn btn-view">View</button><button class="action-btn btn-del">Cancel</button></td></tr>
+          <tr><td>AI-808</td><td>DEL → DXB</td><td>09:30 Jun 15</td><td><span class="badge badge-upcoming">On Time</span></td><td>220/250</td><td><button class="action-btn btn-view">View</button><button class="action-btn btn-del">Cancel</button></td></tr>
+          <tr><td>6E-415</td><td>BLR → GOI</td><td>13:00 Jun 15</td><td><span class="badge" style="background:#fff3e0;color:#e65100;">Delayed</span></td><td>82/180</td><td><button class="action-btn btn-view">View</button><button class="action-btn btn-del">Cancel</button></td></tr>
+          <tr><td>UK-890</td><td>HYD → SIN</td><td>17:15 Jun 15</td><td><span class="badge badge-completed">Departed</span></td><td>198/220</td><td><button class="action-btn btn-view">View</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Passenger Management -->
+  <div class="admin-section">
+    <h3><i class='bx bxs-group'></i> Recent Passengers</h3>
+    <div class="table-wrap">
+      <table class="ams-table">
+        <thead>
+          <tr><th>Passenger ID</th><th>Name</th><th>Email</th><th>Flight</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>12345</td><td>Rahul Sharma</td><td>rahul@gmail.com</td><td>SW-201</td><td><span class="badge badge-upcoming">Confirmed</span></td><td><button class="action-btn btn-view">View</button></td></tr>
+          <tr><td>67890</td><td>Priya Patel</td><td>priya@gmail.com</td><td>AI-808</td><td><span class="badge badge-upcoming">Confirmed</span></td><td><button class="action-btn btn-view">View</button></td></tr>
+          <tr><td>11111</td><td>Arjun Singh</td><td>arjun@gmail.com</td><td>6E-415</td><td><span class="badge badge-cancelled">Cancelled</span></td><td><button class="action-btn btn-view">View</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="admin-section">
+    <h3><i class='bx bxs-cog'></i> Quick Actions</h3>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="alert('Add Flight feature – connect to backend')"><i class='bx bx-plus'></i> Add Flight</button>
+      <button class="btn btn-secondary" onclick="window.location.href='flights.html'"><i class='bx bxs-plane'></i> View All Flights</button>
+      <button class="btn" style="background:#ffe082;color:#333;" onclick="alert('Report generated!')"><i class='bx bxs-report'></i> Generate Report</button>
+      <a href="admin-login.html" class="btn btn-danger"><i class='bx bx-log-out'></i> Admin Logout</a>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 SkyWings Airline Management System | Admin View</footer>
+<script src="utils.js"></script>
+<script>
+AMS.guardAdmin();
+initNavToggle();
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – My Trips</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { min-height: 100vh; }
+.trips-wrap { max-width: 900px; margin: 40px auto; padding: 0 20px 60px; }
+
+.tab-bar { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+.tab-btn {
+  padding: 10px 24px; border-radius: 50px;
+  border: 2px solid rgba(255,255,255,0.35);
+  background: transparent; color: #fff;
+  font-family: var(--font); font-size: 0.92rem;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.tab-btn:hover { background: rgba(255,255,255,0.15); }
+.tab-btn.active { background: var(--accent); border-color: var(--accent); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.trips-title { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 20px; }
+
+/* Table wrapper */
+.table-wrap { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+.table-wrap table { width: 100%; border-collapse: collapse; }
+.table-wrap th, .table-wrap td { color: #1b253a; padding: 14px 18px; border-bottom: 1px solid rgba(16, 39, 74, 0.08); }
+.table-wrap thead { background: #f4f6fc; }
+.table-wrap th { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; color: #0f2a53; }
+.table-wrap tbody tr:hover { background: rgba(111, 140, 255, 0.05); }
+
+.status-pill {
+  display: inline-block; padding: 3px 12px; border-radius: 50px;
+  font-size: 0.78rem; font-weight: 700;
+}
+.pill-upcoming { background: #e3f2fd; color: #1565c0; }
+.pill-cancelled { background: #ffebee; color: #c62828; }
+.pill-completed { background: #e8f5e9; color: #2e7d32; }
+
+.empty-state { text-align: center; padding: 40px; color: #888; }
+.empty-state i { font-size: 3rem; margin-bottom: 10px; display: block; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <button class="nav-toggle" id="nav-toggle"><i class='bx bx-menu'></i></button>
+  <div class="nav-links" id="nav-links">
+    <a href="home.html"><i class='bx bxs-home'></i> Home</a>
+    <a href="profile.html"><i class='bx bxs-user-circle'></i> My Profile</a>
+    <a href="trips.html" class="active"><i class='bx bxs-plane-take-off'></i> My Trips</a>
+    <a href="booking.html"><i class='bx bxs-purchase-tag'></i> Book Flight</a>
+    <a href="login.html" onclick="AMS.logout();return false;"><i class='bx bx-log-out'></i> Logout</a>
+  </div>
+  <div class="nav-welcome" id="nav-welcome"></div>
+</nav>
+
+<div class="trips-wrap">
+  <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:8px;">✈ My Trips</h2>
+  <p style="opacity:0.7;margin-bottom:28px;">All your bookings in one place</p>
+
+  <!-- US007: 3 links for Upcoming, Cancelled, Completed -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('upcoming',this)"><i class='bx bx-calendar'></i> Upcoming</button>
+    <button class="tab-btn" onclick="switchTab('cancelled',this)"><i class='bx bxs-x-circle'></i> Cancelled</button>
+    <button class="tab-btn" onclick="switchTab('completed',this)"><i class='bx bxs-check-circle'></i> Completed</button>
+  </div>
+
+  <!-- Upcoming -->
+  <div class="tab-content active" id="tab-upcoming">
+    <div class="trips-title">🗓 Upcoming Flights</div>
+    <div class="table-wrap">
+      <table class="ams-table">
+        <thead>
+          <tr>
+            <th>Flight Name</th><th>Origin</th><th>Destination</th>
+            <th>Travel Date</th><th>Price</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:var(--teal)"></i> SkyWings SW-201</td>
+            <td>Mumbai (BOM)</td><td>Delhi (DEL)</td>
+            <td>15 Jun 2025</td><td>₹4,299</td>
+            <td><span class="status-pill pill-upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:var(--teal)"></i> AirIndia AI-808</td>
+            <td>Delhi (DEL)</td><td>Dubai (DXB)</td>
+            <td>22 Jun 2025</td><td>₹14,499</td>
+            <td><span class="status-pill pill-upcoming">Upcoming</span></td>
+          </tr>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:var(--teal)"></i> IndiGo 6E-415</td>
+            <td>Bangalore (BLR)</td><td>Goa (GOI)</td>
+            <td>30 Jun 2025</td><td>₹3,199</td>
+            <td><span class="status-pill pill-upcoming">Upcoming</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Cancelled -->
+  <div class="tab-content" id="tab-cancelled">
+    <div class="trips-title">❌ Cancelled Flights</div>
+    <div class="table-wrap">
+      <table class="ams-table">
+        <thead>
+          <tr>
+            <th>Flight Name</th><th>Origin</th><th>Destination</th>
+            <th>Travel Date</th><th>Price</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:#c62828"></i> SpiceJet SG-121</td>
+            <td>Chennai (MAA)</td><td>Kolkata (CCU)</td>
+            <td>10 May 2025</td><td>₹5,199</td>
+            <td><span class="status-pill pill-cancelled">Cancelled</span></td>
+          </tr>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:#c62828"></i> Vistara UK-890</td>
+            <td>Hyderabad (HYD)</td><td>Singapore (SIN)</td>
+            <td>18 May 2025</td><td>₹19,899</td>
+            <td><span class="status-pill pill-cancelled">Cancelled</span></td>
+          </tr>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:#c62828"></i> GoAir G8-302</td>
+            <td>Pune (PNQ)</td><td>Ahmedabad (AMD)</td>
+            <td>25 Apr 2025</td><td>₹2,799</td>
+            <td><span class="status-pill pill-cancelled">Cancelled</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Completed -->
+  <div class="tab-content" id="tab-completed">
+    <div class="trips-title">✅ Completed Flights</div>
+    <div class="table-wrap">
+      <table class="ams-table">
+        <thead>
+          <tr>
+            <th>Flight Name</th><th>Origin</th><th>Destination</th>
+            <th>Travel Date</th><th>Price</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:#2e7d32"></i> SkyWings SW-102</td>
+            <td>Mumbai (BOM)</td><td>London (LHR)</td>
+            <td>14 Mar 2025</td><td>₹45,999</td>
+            <td><span class="status-pill pill-completed">Completed</span></td>
+          </tr>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:#2e7d32"></i> AirIndia AI-312</td>
+            <td>Delhi (DEL)</td><td>New York (JFK)</td>
+            <td>28 Jan 2025</td><td>₹62,499</td>
+            <td><span class="status-pill pill-completed">Completed</span></td>
+          </tr>
+          <tr>
+            <td><i class='bx bxs-plane' style="color:#2e7d32"></i> Emirates EK-500</td>
+            <td>Mumbai (BOM)</td><td>Dubai (DXB)</td>
+            <td>05 Dec 2024</td><td>₹16,299</td>
+            <td><span class="status-pill pill-completed">Completed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 SkyWings Airline Management System</footer>
+<script src="utils.js"></script>
+<script>
+AMS.guard();
+loadNavUser();
+initNavToggle();
+
+// Auto-open tab from URL param
+const params = new URLSearchParams(window.location.search);
+const tab = params.get('tab');
+if (tab) switchTab(tab, document.querySelector('.tab-btn'));
+
+function switchTab(name, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+  // Fix: when called from URL param, highlight correct button
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.textContent.trim().toLowerCase().includes(name)) b.classList.add('active');
+  });
+}
+</script>
+</body>
+</html>

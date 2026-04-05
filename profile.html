@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – My Profile</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <button class="nav-toggle" id="nav-toggle"><i class='bx bx-menu'></i></button>
+  <div class="nav-links" id="nav-links">
+    <a href="home.html"><i class='bx bxs-home'></i> Home</a>
+    <a href="profile.html" class="active"><i class='bx bxs-user-circle'></i> My Profile</a>
+    <a href="trips.html"><i class='bx bxs-plane-take-off'></i> My Trips</a>
+    <a href="booking.html"><i class='bx bxs-purchase-tag'></i> Book Flight</a>
+    <a href="checkin.html"><i class='bx bxs-id-card'></i> Check-In</a>
+    <a href="login.html" onclick="AMS.logout();return false;"><i class='bx bx-log-out'></i> Logout</a>
+  </div>
+  <div class="nav-welcome" id="nav-welcome"></div>
+</nav>
+
+<div class="profile-wrap">
+  <div class="profile-avatar">
+    <div class="avatar-circle"><i class='bx bxs-user'></i></div>
+    <div id="profile-name"></div>
+    <div class="profile-id">Passenger ID: <strong id="profile-pid"></strong></div>
+  </div>
+
+  <div class="profile-actions">
+    <button class="btn-edit" id="btn-edit" onclick="enableEdit()"><i class='bx bxs-edit'></i> Edit Details</button>
+    <button class="btn-save" id="btn-save" onclick="saveProfile()"><i class='bx bx-save'></i> Save Changes</button>
+  </div>
+
+  <div class="card-white">
+    <p class="form-note">Click "Edit Details" to update your account information.</p>
+    <div class="section-header">
+      <h3><i class='bx bxs-user'></i> Personal Details</h3>
+    </div>
+    <div class="two-col">
+      <div>
+        <label>First Name</label>
+        <input type="text" id="p-fn" maxlength="50" readonly>
+      </div>
+      <div>
+        <label>Last Name</label>
+        <input type="text" id="p-ln" maxlength="50" readonly>
+      </div>
+    </div>
+    <label>Date of Birth</label>
+    <input type="date" id="p-dob" readonly>
+    <label>Email ID</label>
+    <input type="email" id="p-email" readonly>
+    <label>Contact Number</label>
+    <input type="text" id="p-contact" maxlength="10" readonly>
+    <label>Address</label>
+    <textarea id="p-addr" rows="3" maxlength="100" readonly></textarea>
+    <div class="two-col mt-4">
+      <div>
+        <label>Password</label>
+        <input type="text" id="p-pwd" class="mono-input" readonly>
+      </div>
+      <div>
+        <label>Passenger ID</label>
+        <input type="text" id="p-pid" readonly>
+      </div>
+    </div>
+    <div id="save-msg"></div>
+  </div>
+</div>
+
+<footer>© 2025 SkyWings Airline Management System</footer>
+<script src="utils.js"></script>
+<script>
+AMS.guard();
+initNavToggle();
+
+const u = AMS.getUser();
+if (u) {
+  document.getElementById('profile-name').textContent = u.firstName + ' ' + u.lastName;
+  document.getElementById('profile-pid').textContent = u.passengerId;
+  loadNavUser();
+  document.getElementById('p-fn').value = u.firstName || '';
+  document.getElementById('p-ln').value = u.lastName || '';
+  document.getElementById('p-dob').value = u.dob || '';
+  document.getElementById('p-email').value = u.email || '';
+  document.getElementById('p-contact').value = u.contact || '';
+  document.getElementById('p-addr').value = u.address || '';
+  document.getElementById('p-pwd').value = u.password || '';
+  document.getElementById('p-pid').value = u.passengerId || '';
+}
+
+function enableEdit() {
+  ['p-fn','p-ln','p-dob','p-email','p-contact','p-addr'].forEach(id => {
+    document.getElementById(id).removeAttribute('readonly');
+    document.getElementById(id).style.background = '#fff';
+    document.getElementById(id).style.cursor = 'text';
+  });
+  document.getElementById('btn-edit').style.display = 'none';
+  document.getElementById('btn-save').style.display = 'inline-block';
+}
+
+function saveProfile() {
+  const u = AMS.getUser();
+  u.firstName = document.getElementById('p-fn').value;
+  u.lastName = document.getElementById('p-ln').value;
+  u.dob = document.getElementById('p-dob').value;
+  u.email = document.getElementById('p-email').value;
+  u.contact = document.getElementById('p-contact').value;
+  u.address = document.getElementById('p-addr').value;
+  AMS.setUser(u);
+  loadNavUser();
+  document.getElementById('profile-name').textContent = u.firstName + ' ' + u.lastName;
+
+  ['p-fn','p-ln','p-dob','p-email','p-contact','p-addr'].forEach(id => {
+    document.getElementById(id).setAttribute('readonly','true');
+    document.getElementById(id).style.background = '#f8f8f8';
+    document.getElementById(id).style.cursor = 'not-allowed';
+  });
+  document.getElementById('btn-edit').style.display = 'inline-block';
+  document.getElementById('btn-save').style.display = 'none';
+  document.getElementById('save-msg').textContent = '✅ Profile updated successfully!';
+  setTimeout(() => document.getElementById('save-msg').textContent = '', 3000);
+}
+</script>
+</body>
+</html>

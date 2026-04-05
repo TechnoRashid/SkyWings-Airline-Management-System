@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – Login</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* US002 – External CSS rules applied here */
+body { display: flex; flex-direction: column; min-height: 100vh; }
+.login-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+
+.login-box {
+  width: 420px;
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(30px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  border-radius: 20px;
+  padding: 40px;
+  color: white;
+  position: center; /* spec */
+  text-align: center;
+}
+
+.login-logo { font-size: 3rem; color: var(--accent); margin-bottom: 8px; }
+.login-title { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 4px; }
+.login-sub { font-size: 0.85rem; opacity: 0.7; margin-bottom: 28px; }
+
+/* Input box attributes per US002 */
+.login-box .input-group { margin-bottom: 18px; text-align: left; }
+
+/* Login button */
+.btn-login {
+  width: 100%;
+  padding: 13px;
+  background: var(--teal-dark);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 70px;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.25s;
+  margin-top: 6px;
+}
+.btn-login:hover { background: black; border-radius: 70px; }
+
+.login-footer { margin-top: 24px; font-size: 0.88rem; opacity: 0.8; }
+.login-footer a { color: #ffe082; font-weight: 600; border-bottom: 1px dashed; }
+
+#login-msg { font-size: 0.85rem; min-height: 22px; margin-bottom: 10px; color: #ff6b6b; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- Minimal top bar -->
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <div style="font-size:0.85rem;opacity:0.6;">Airline Management System</div>
+</nav>
+
+<div class="login-wrap">
+  <div class="login-box">
+    <div class="login-logo"><i class='bx bxs-plane-alt'></i></div>
+    <div class="login-title">Welcome Back</div>
+    <div class="login-sub">Sign in to SkyWings AMS</div>
+
+    <!-- US003: message div above UserId -->
+    <div id="login-msg"></div>
+
+    <div class="input-group">
+      <i class='bx bxs-user'></i>
+      <input type="text" id="userId" placeholder="User ID (5-digit numeric)" maxlength="5" inputmode="numeric">
+    </div>
+
+    <div class="input-group">
+      <i class='bx bxs-lock'></i>
+      <input type="password" id="password" placeholder="Password" maxlength="30">
+    </div>
+
+    <div style="text-align:right;margin-bottom:14px;">
+      <a href="forgot.html" style="font-size:0.82rem;opacity:0.75;">Forgot password?</a>
+    </div>
+
+    <button class="btn-login" onclick="doLogin()"><i class='bx bx-log-in'></i> LOGIN</button>
+
+    <div class="login-footer">
+      New User? <a href="register.html">Register Yourself</a>
+    </div>
+    <div class="login-footer" style="margin-top:10px;">
+      <a href="admin-login.html">Admin Login</a>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 SkyWings Airline Management System</footer>
+
+<script src="utils.js"></script>
+<script>
+/* US003 – Internal JS */
+function doLogin() {
+  const uid = document.getElementById('userId').value.trim();
+  const pwd = document.getElementById('password').value.trim();
+  const msg = document.getElementById('login-msg');
+
+  // Mandatory check
+  if (!uid && !pwd) { msg.textContent = 'Both ID/password not valid'; return; }
+  if (!uid) { msg.textContent = 'ID not valid'; return; }
+  if (!pwd) { msg.textContent = 'Password not valid'; return; }
+
+  // Numeric & max 5 digits
+  if (!/^\d{1,5}$/.test(uid)) { msg.textContent = 'ID not valid'; return; }
+
+  // Length checks
+  if (pwd.length < 6) { msg.textContent = 'Password not valid'; return; }
+  if (pwd.length > 30) { msg.textContent = 'Password not valid'; return; }
+
+  let user = authenticateUser(uid, pwd);
+  if (!user) {
+    const match = STATIC_USERS.find(u => u.id === uid && u.password === pwd);
+    if (match) {
+      user = {
+        firstName: 'Passenger',
+        lastName: 'User',
+        email: 'user@demo.com',
+        dob: '1995-06-15',
+        address: '123 Demo St, Mumbai',
+        contact: '9876543210',
+        passengerId: uid,
+        password: pwd
+      };
+    }
+  }
+
+  if (!user) {
+    msg.textContent = 'Both ID/password not valid'; return;
+  }
+
+  AMS.setUser(user);
+  if (user.mustResetPassword) {
+    setTimeout(() => window.location.href = 'set-password.html', 400);
+    return;
+  }
+  window.location.href = 'home.html';
+}
+
+// Allow Enter key
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

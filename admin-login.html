@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – Admin Login</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { display:flex; flex-direction:column; min-height: 100vh; }
+.login-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 16px; }
+.login-box { width:420px; background:transparent; border:2px solid rgba(255,204,0,0.3); backdrop-filter:blur(30px); box-shadow:0 8px 40px rgba(0,0,0,0.5); border-radius:20px; padding:40px; color:#fff; text-align:center; }
+.admin-icon { font-size:3.5rem; color:#ffc107; margin-bottom:8px; }
+.login-box h2 { font-family:var(--font-display); font-size:1.5rem; margin-bottom:4px; }
+.login-box p { font-size:0.82rem; opacity:0.6; margin-bottom:28px; }
+.btn-admin { width:100%; padding:13px; background:#ffc107; color:#111; border:none; border-radius:70px; font-family:var(--font); font-size:1rem; font-weight:800; cursor:pointer; transition:all 0.25s; letter-spacing:1px; margin-top:6px; }
+.btn-admin:hover { background:#000; color:#ffc107; }
+#admin-msg { font-size:0.85rem; color:#ff6b6b; min-height:22px; margin-bottom:8px; }
+</style>
+</head>
+<body>
+<nav class="navbar" style="background:rgba(0,0,0,0.5);">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <a href="login.html" style="font-size:0.85rem;opacity:0.7;color:#ffe082;">Passenger Login →</a>
+</nav>
+
+<div class="login-wrap">
+  <div class="login-box">
+    <div class="admin-icon"><i class='bx bxs-shield'></i></div>
+    <h2>Admin Access</h2>
+    <p>Restricted – Authorized Personnel Only</p>
+    <div id="admin-msg"></div>
+    <div class="input-group" style="margin-bottom:18px;">
+      <i class='bx bxs-user-badge'></i>
+      <input type="text" id="a-uid" placeholder="Admin ID" maxlength="5" inputmode="numeric">
+    </div>
+    <div class="input-group" style="margin-bottom:18px;">
+      <i class='bx bxs-lock-alt'></i>
+      <input type="password" id="a-pwd" placeholder="Admin Password" maxlength="30">
+    </div>
+    <button class="btn-admin" onclick="adminLogin()"><i class='bx bxs-dashboard'></i> ADMIN LOGIN</button>
+    <div style="margin-top:20px;font-size:0.85rem;opacity:0.7;">
+      <a href="login.html" style="color:#ffe082;">← Back to Passenger Login</a>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 SkyWings AMS | Admin Portal</footer>
+<script src="utils.js"></script>
+<script>
+function adminLogin() {
+  const uid = document.getElementById('a-uid').value.trim();
+  const pwd = document.getElementById('a-pwd').value.trim();
+  const msg = document.getElementById('admin-msg');
+  if (!uid || !pwd) { msg.textContent = 'All fields required'; return; }
+  // Admin credential (hardcoded for demo)
+  if (uid === '99999' && pwd === 'admin@TCS') {
+    AMS.setUser({ firstName:'Admin', lastName:'User', passengerId:'99999', password:'admin@TCS', email:'admin@skywings.com', isAdmin: true });
+    window.location.href = 'admin.html';
+  } else {
+    msg.textContent = 'Invalid admin credentials';
+  }
+}
+document.addEventListener('keydown', e => { if(e.key==='Enter') adminLogin(); });
+</script>
+</body>
+</html>

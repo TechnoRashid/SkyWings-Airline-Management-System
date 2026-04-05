@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – Register</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* US005 – Internal CSS */
+body { min-height: 100vh; }
+.reg-wrap { display: flex; justify-content: center; padding: 40px 16px; }
+
+.reg-box {
+  font-color: black;            /* spec */
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;   /* Gray94 approx */
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+  padding: 20px;                /* 20 RX */
+  width: 100%;
+  max-width: 560px;
+  color: #111;
+  align: center;                /* spec */
+}
+
+.reg-box h2 { font-size: 1.5rem; margin-bottom: 4px; color: var(--teal-dark); }
+.reg-box p { font-size: 0.85rem; color: #555; margin-bottom: 24px; }
+.reg-box label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: #333; }
+
+.reg-box input, .reg-box select, .reg-box textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 9px;
+  font-family: Arial, sans-serif;
+  font-size: 0.93rem;
+  color: #222;
+  background: #fff;
+  outline: none;
+  transition: border 0.2s;
+  margin-bottom: 4px;
+}
+.reg-box input:focus, .reg-box select:focus, .reg-box textarea:focus { border-color: var(--teal); }
+.reg-box textarea { resize: vertical; min-height: 72px; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field-wrap { margin-bottom: 16px; }
+
+.err { color: red; font-size: 0.8rem; min-height: 16px; display: block; }
+
+/* Register button – US005 */
+.btn-register {
+  background-color: DodgerBlue;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+.btn-register:hover { background-color: #0047ab; } /* Cobalt */
+
+.btn-reset {
+  background: #ccc;
+  color: #333;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  margin-left: 12px;
+  transition: background 0.2s;
+}
+.btn-reset:hover { background: #aaa; }
+
+/* Acknowledgment screen */
+#ack-screen { display: none; text-align: center; padding: 20px 0; }
+#ack-screen .ack-icon { font-size: 4rem; color: var(--teal); margin-bottom: 12px; }
+#ack-screen .ack-title { font-size: 1.4rem; font-weight: 700; color: green; margin-bottom: 16px; }
+.ack-details { background: #e8f5e9; border-radius: 12px; padding: 18px; text-align: left; margin-top: 12px; }
+.ack-details p { margin-bottom: 8px; font-size: 0.92rem; }
+.ack-details strong { color: var(--teal-dark); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <div style="font-size:0.85rem;opacity:0.7;">
+    Already have an account? <a href="login.html" style="color:#ffe082;font-weight:600;">Login</a>
+  </div>
+</nav>
+
+<div class="reg-wrap">
+  <div class="reg-box">
+    <!-- REGISTRATION FORM -->
+    <div id="form-screen">
+      <h2><i class='bx bxs-user-plus' style="color:var(--teal)"></i> Passenger Registration</h2>
+      <p>Fill in the details to create your SkyWings account</p>
+
+      <div class="field-row">
+        <div class="field-wrap">
+          <label>First Name *</label>
+          <input type="text" id="firstName" placeholder="First name" maxlength="50">
+          <span class="err" id="err-fn"></span>
+        </div>
+        <div class="field-wrap">
+          <label>Last Name *</label>
+          <input type="text" id="lastName" placeholder="Last name" maxlength="50">
+          <span class="err" id="err-ln"></span>
+        </div>
+      </div>
+
+      <div class="field-wrap">
+        <label>Date of Birth *</label>
+        <input type="date" id="dob">
+        <span class="err" id="err-dob"></span>
+      </div>
+
+      <div class="field-wrap">
+        <label>Email ID *</label>
+        <input type="email" id="email" placeholder="yourname@gmail.com">
+        <span class="err" id="err-email"></span>
+      </div>
+
+      <div class="field-wrap">
+        <label>Address *</label>
+        <textarea id="address" placeholder="Street, City, State..." maxlength="100"></textarea>
+        <span class="err" id="err-addr"></span>
+      </div>
+
+      <div class="field-wrap">
+        <label>Contact Number *</label>
+        <input type="text" id="contact" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric">
+        <span class="err" id="err-contact"></span>
+      </div>
+
+      <div style="margin-top:8px;">
+        <button class="btn-register" onclick="doRegister()"><i class='bx bx-check'></i> Register</button>
+        <button class="btn-reset" onclick="doReset()"><i class='bx bx-reset'></i> Reset</button>
+      </div>
+
+      <p style="margin-top:20px;font-size:0.82rem;color:#666;">
+        Already have an account? <a href="login.html" style="color:var(--teal);font-weight:700;">Login here</a>
+      </p>
+      
+      <div style="margin-top:16px;padding:16px;background:#e3f2fd;border-radius:12px;text-align:center;">
+        <p style="font-size:0.85rem;color:#333;margin:0 0 12px;">Want to browse available flights first?</p>
+        <button type="button" onclick="loginAsGuest()" style="background:#1e90ff;color:#fff;border:none;padding:10px 24px;border-radius:50px;font-size:0.9rem;font-weight:600;cursor:pointer;">
+          <i class='bx bxs-plane'></i> Continue as Guest
+        </button>
+      </div>
+    </div>
+
+    <!-- ACKNOWLEDGMENT SCREEN (US004) -->
+    <div id="ack-screen">
+      <div class="ack-icon"><i class='bx bxs-check-circle'></i></div>
+      <div class="ack-title">Passenger Registration is successful.</div>
+      <div class="ack-details">
+        <p><strong>Passenger ID:</strong> <span id="ack-pid"></span></p>
+        <p><strong>Password:</strong> <span id="ack-pwd"></span></p>
+        <p><strong>Name:</strong> <span id="ack-name"></span></p>
+        <p><strong>Email:</strong> <span id="ack-email"></span></p>
+        <p><strong>Contact:</strong> <span id="ack-contact"></span></p>
+      </div>
+      <div style="margin-top:24px;">
+        <a href="login.html" class="btn-register" style="text-decoration:none;display:inline-block;margin-top:8px;">
+          <i class='bx bx-log-in'></i> Proceed to Login
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>© 2025 SkyWings Airline Management System</footer>
+
+<script src="utils.js"></script>
+<script>
+/* US006 – External JS logic (inline for single-file simplicity, linked via utils.js) */
+
+function doRegister() {
+  let ok = true;
+
+  const fn = document.getElementById('firstName').value.trim();
+  const ln = document.getElementById('lastName').value.trim();
+  const dob = document.getElementById('dob').value;
+  const email = document.getElementById('email').value.trim();
+  const addr = document.getElementById('address').value.trim();
+  const contact = document.getElementById('contact').value.trim();
+
+  // Clear all errors
+  ['fn','ln','dob','email','addr','contact'].forEach(k => document.getElementById('err-'+k).textContent = '');
+
+  // 1) All mandatory
+  if (!fn) { document.getElementById('err-fn').textContent = 'First name is required'; ok = false; }
+  if (!ln) { document.getElementById('err-ln').textContent = 'Last name is required'; ok = false; }
+
+  // 2) DOB check > 1/1/1924
+  if (!dob) {
+    document.getElementById('err-dob').textContent = 'Date of Birth is required'; ok = false;
+  } else if (new Date(dob) <= new Date('1924-01-01')) {
+    document.getElementById('err-dob').textContent = 'Choose a date greater than 1/1/1924'; ok = false;
+  }
+
+  // 3) Email format
+  if (!email) {
+    document.getElementById('err-email').textContent = 'Email is required'; ok = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('err-email').textContent = 'Enter a valid mail id'; ok = false;
+  }
+
+  // Address
+  if (!addr) { document.getElementById('err-addr').textContent = 'Address is required'; ok = false; }
+
+  // 4) Contact – exactly 10 digits
+  if (!contact) {
+    document.getElementById('err-contact').textContent = 'Contact number is required'; ok = false;
+  } else if (!/^\d{10}$/.test(contact)) {
+    document.getElementById('err-contact').textContent = 'Enter a valid contact number'; ok = false;
+  }
+
+  if (!ok) return;
+
+  // Generate ID & password
+  const pid = AMS.genId();
+  const password = fn.substring(0, 4) + '@123';
+
+  // Save user
+  const user = {
+    firstName: fn,
+    lastName: ln,
+    dob,
+    email,
+    address: addr,
+    contact,
+    passengerId: pid,
+    password,
+    mustResetPassword: true
+  };
+  try {
+    registerPassenger(user);
+    AMS.setUser(user);
+  } catch (err) {
+    alert(err.message || 'Unable to complete registration');
+    return;
+  }
+
+  // Show acknowledgment
+  document.getElementById('ack-pid').textContent = pid;
+  document.getElementById('ack-pwd').textContent = password;
+  document.getElementById('ack-name').textContent = fn + ' ' + ln;
+  document.getElementById('ack-email').textContent = email;
+  document.getElementById('ack-contact').textContent = contact;
+  document.getElementById('form-screen').style.display = 'none';
+  document.getElementById('ack-screen').style.display = 'block';
+}
+
+// 5) Reset confirmation
+function doReset() {
+  if (confirm('Is it Okay to reset the fields?')) {
+    ['firstName','lastName','dob','email','address','contact'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    ['fn','ln','dob','email','addr','contact'].forEach(k =>
+      document.getElementById('err-'+k).textContent = '');
+  }
+}
+
+function loginAsGuest() {
+  AMS.loginGuest();
+  window.location.href = 'flights.html';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – Book Flight</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { min-height: 100vh; }
+.book-wrap { max-width: 780px; margin: 0 auto; padding: 30px 20px 60px; }
+
+.flight-summary {
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 28px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.flight-summary h4 { font-size: 1rem; opacity: 0.7; }
+.flight-summary .route { font-size: 1.4rem; font-weight: 700; }
+.flight-summary .price { font-size: 1.6rem; font-weight: 700; color: #ffe082; }
+
+.card-white label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 5px; color: #444; }
+.card-white input, .card-white select {
+  width: 100%; padding: 11px 14px; border: 1.5px solid #ccc;
+  border-radius: 9px; font-family: Arial, sans-serif; font-size: 0.92rem;
+  color: #222; outline: none; transition: border 0.2s; margin-bottom: 4px;
+}
+.card-white input:focus, .card-white select:focus { border-color: var(--teal); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field-wrap { margin-bottom: 14px; }
+.err { color: red; font-size: 0.8rem; }
+
+.btn-confirm {
+  width: 100%; padding: 14px; background: var(--teal); color: #fff;
+  border: none; border-radius: 50px; font-size: 1rem; font-weight: 700;
+  font-family: var(--font); cursor: pointer; transition: background 0.2s; margin-top: 10px;
+}
+.btn-confirm:hover { background: var(--teal-dark); }
+
+/* Success state */
+#success-state { display: none; text-align: center; padding: 30px 0; }
+.success-icon { font-size: 5rem; color: var(--success); margin-bottom: 16px; }
+.pnr { font-size: 2rem; font-weight: 700; letter-spacing: 4px; color: var(--teal-dark); background: #e8f5e9; padding: 12px 28px; border-radius: 12px; display: inline-block; margin: 12px 0; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <button class="nav-toggle" id="nav-toggle"><i class='bx bx-menu'></i></button>
+  <div class="nav-links" id="nav-links">
+    <a href="home.html"><i class='bx bxs-home'></i> Home</a>
+    <a href="profile.html"><i class='bx bxs-user-circle'></i> My Profile</a>
+    <a href="trips.html"><i class='bx bxs-plane-take-off'></i> My Trips</a>
+    <a href="booking.html" class="active"><i class='bx bxs-purchase-tag'></i> Book Flight</a>
+    <a href="checkin.html"><i class='bx bxs-id-card'></i> Check-In</a>
+    <a href="login.html" onclick="AMS.logout();return false;"><i class='bx bx-log-out'></i> Logout</a>
+  </div>
+  <div class="nav-welcome" id="nav-welcome"></div>
+</nav>
+
+<div class="book-wrap">
+  <h2 style="font-family:var(--font-display);font-size:2rem;margin-bottom:20px;">🎟 Complete Booking</h2>
+
+  <!-- Flight summary -->
+  <div class="flight-summary" id="flight-summary">
+    <div>
+      <div class="route" id="sum-route">Mumbai → Delhi</div>
+      <div style="opacity:0.7;font-size:0.88rem;" id="sum-flight">SkyWings SW-201</div>
+    </div>
+    <div class="price" id="sum-price">₹4,299</div>
+    <button class="btn-secondary" type="button" onclick="editSearch()"><i class='bx bx-edit'></i> Edit Search</button>
+  </div>
+
+  <!-- Booking form -->
+  <div id="booking-form">
+    <div class="card-white">
+      <h3 style="color:var(--teal-dark);margin-bottom:18px;"><i class='bx bxs-user'></i> Passenger Details</h3>
+      <div class="two-col">
+        <div class="field-wrap">
+          <label>First Name *</label>
+          <input type="text" id="b-fn" maxlength="50">
+          <span class="err" id="e-fn"></span>
+        </div>
+        <div class="field-wrap">
+          <label>Last Name *</label>
+          <input type="text" id="b-ln" maxlength="50">
+          <span class="err" id="e-ln"></span>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="field-wrap">
+          <label>Date of Birth *</label>
+          <input type="date" id="b-dob">
+          <span class="err" id="e-dob"></span>
+        </div>
+        <div class="field-wrap">
+          <label>Gender *</label>
+          <select id="b-gender">
+            <option value="">Select</option>
+            <option>Male</option><option>Female</option><option>Other</option>
+          </select>
+          <span class="err" id="e-gender"></span>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="field-wrap">
+          <label>Passport / ID Number *</label>
+          <input type="text" id="b-passport" maxlength="20">
+          <span class="err" id="e-passport"></span>
+        </div>
+        <div class="field-wrap">
+          <label>Nationality *</label>
+          <select id="b-nat">
+            <option value="">Select</option>
+            <option>Indian</option><option>American</option>
+            <option>British</option><option>Emirati</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label>Meal Preference</label>
+        <select id="b-meal">
+          <option>Vegetarian</option><option>Non-Vegetarian</option>
+          <option>Vegan</option><option>Jain</option><option>No Preference</option>
+        </select>
+      </div>
+      <div class="field-wrap">
+        <label>Special Requests</label>
+        <input type="text" id="b-special" placeholder="Wheelchair, extra legroom, etc." maxlength="100">
+      </div>
+      <button class="btn-confirm" onclick="confirmBooking()">
+        <i class='bx bxs-check-circle'></i> Confirm & Pay
+      </button>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div id="success-state">
+    <div class="card-white">
+      <div class="success-icon"><i class='bx bxs-check-circle'></i></div>
+      <h2 style="color:var(--success);margin-bottom:8px;">Booking Confirmed!</h2>
+      <p>Your flight has been booked successfully.</p>
+      <div class="pnr" id="pnr-no">SKY-XXXXX</div>
+      <p style="font-size:0.85rem;color:#666;margin-top:8px;">Save your PNR for check-in</p>
+      <div style="margin-top:24px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="checkin.html" class="btn-confirm" style="text-decoration:none;display:inline-block;width:auto;padding:12px 28px;">Web Check-In</a>
+        <a href="trips.html" class="btn-confirm" style="text-decoration:none;display:inline-block;width:auto;padding:12px 28px;background:#555;">My Trips</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>© 2025 SkyWings Airline Management System</footer>
+<script src="utils.js"></script>
+<script>
+AMS.guardBooking();
+loadNavUser();
+initNavToggle();
+
+const u = AMS.getUser();
+const fl = AMS.get('selectedFlight');
+if (u) {
+  document.getElementById('b-fn').value = u.firstName || '';
+  document.getElementById('b-ln').value = u.lastName || '';
+  document.getElementById('b-dob').value = u.dob || '';
+}
+if (fl) {
+  document.getElementById('sum-route').textContent =
+    (fl.org||'Origin').split('(')[0] + '→ ' + (fl.dst||'Destination').split('(')[0];
+  document.getElementById('sum-flight').textContent = fl.no || '';
+  document.getElementById('sum-price').textContent = fl.price || '';
+}
+
+function confirmBooking() {
+  let ok = true;
+  ['fn','ln','dob','gender','passport'].forEach(k => document.getElementById('e-'+k).textContent = '');
+  if (!document.getElementById('b-fn').value) { document.getElementById('e-fn').textContent='Required'; ok=false; }
+  if (!document.getElementById('b-ln').value) { document.getElementById('e-ln').textContent='Required'; ok=false; }
+  if (!document.getElementById('b-dob').value) { document.getElementById('e-dob').textContent='Required'; ok=false; }
+  if (!document.getElementById('b-gender').value) { document.getElementById('e-gender').textContent='Required'; ok=false; }
+  if (!document.getElementById('b-passport').value) { document.getElementById('e-passport').textContent='Required'; ok=false; }
+  if (!ok) return;
+
+  const pnr = 'SKY-' + Math.random().toString(36).substring(2,7).toUpperCase();
+  document.getElementById('pnr-no').textContent = pnr;
+  document.getElementById('booking-form').style.display = 'none';
+  document.getElementById('success-state').style.display = 'block';
+}
+
+function editSearch() {
+  window.location.href = 'home.html';
+}
+</script>
+</body>
+</html>

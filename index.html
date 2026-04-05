@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkyWings – Airline Management System</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { min-height: 100vh; }
+
+/* Hero */
+.landing-hero {
+  text-align: center;
+  padding: 80px 20px 60px;
+  position: relative;
+}
+.landing-hero .tag {
+  display: inline-block;
+  background: rgba(255,209,102,0.15);
+  border: 1.5px solid #ffd166;
+  color: #ffd166;
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.landing-hero h1 {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+.landing-hero h1 span { color: var(--accent); }
+.landing-hero p {
+  font-size: 1.1rem;
+  opacity: 0.75;
+  max-width: 560px;
+  margin: 0 auto 36px;
+}
+.hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* Stats strip */
+.stats-strip {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  background: rgba(0,0,0,0.2);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  flex-wrap: wrap;
+}
+.stat-item { padding: 24px 40px; text-align: center; border-right: 1px solid rgba(255,255,255,0.1); }
+.stat-item:last-child { border-right: none; }
+.stat-item .num { font-size: 1.8rem; font-weight: 700; color: #ffe082; }
+.stat-item .lbl { font-size: 0.78rem; opacity: 0.6; margin-top: 2px; }
+
+/* Why choose */
+.why-section { padding: 60px 32px; text-align: center; }
+.why-section h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 40px; }
+.why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 960px; margin: 0 auto; }
+.why-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 18px; padding: 28px; text-align: center; }
+.why-card i { font-size: 2.5rem; margin-bottom: 12px; }
+.why-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+.why-card p { font-size: 0.82rem; opacity: 0.65; }
+
+/* CTA */
+.cta { background: var(--accent); text-align: center; padding: 50px 20px; margin-top: 40px; }
+.cta h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 12px; }
+.cta p { opacity: 0.85; margin-bottom: 24px; }
+
+@media (max-width:600px) {
+  .landing-hero h1 { font-size: 2.2rem; }
+  .stat-item { padding: 16px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <button class="nav-toggle" id="nav-toggle"><i class='bx bx-menu'></i></button>
+  <div class="nav-links" id="nav-links">
+    <a href="index.html" class="active"><i class='bx bxs-home'></i> Home</a>
+    <a href="login.html"><i class='bx bx-log-in'></i> Login</a>
+    <a href="register.html"><i class='bx bxs-user-plus'></i> Register</a>
+    <a href="admin-login.html"><i class='bx bxs-shield'></i> Admin</a>
+    <a href="flights.html"><i class='bx bxs-plane'></i> Flights</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="landing-hero">
+  <center><div class="tag">✈ SkyWings Airline Management System</div></center>
+  <h1>SkyWings<br><span>Airline Management</span><br>System</h1>
+  <p>A complete, professional-grade Airline Management System built for seamless passenger experience from booking to boarding.</p>
+  <div class="hero-btns">
+    <a href="login.html" class="btn btn-primary" style="font-size:1rem;padding:14px 36px;"><i class='bx bx-log-in'></i> Login to AMS</a>
+    <a href="register.html" class="btn btn-secondary" style="font-size:1rem;padding:14px 36px;"><i class='bx bxs-user-plus'></i> Register Now</a>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-strip">
+  <div class="stat-item"><div class="num">50+</div><div class="lbl">Destinations</div></div>
+  <div class="stat-item"><div class="num">1.2M+</div><div class="lbl">Happy Passengers</div></div>
+  <div class="stat-item"><div class="num">99.2%</div><div class="lbl">On-Time Rate</div></div>
+  <div class="stat-item"><div class="num">24/7</div><div class="lbl">Support</div></div>
+</div>
+
+<!-- Why Choose Us -->
+<div class="why-section">
+  <h2>Why SkyWings AMS?</h2>
+  <div class="why-grid">
+    <div class="why-card"><i class='bx bxs-zap' style="color:#ffe082"></i><h4>Lightning Fast Booking</h4><p>Book any flight in under 60 seconds with our streamlined checkout.</p></div>
+    <div class="why-card"><i class='bx bxs-shield-x' style="color:#80cbc4"></i><h4>Secure & Reliable</h4><p>Bank-grade security for all your personal and payment data.</p></div>
+    <div class="why-card"><i class='bx bxs-map-alt' style="color:#ef9a9a"></i><h4>Real-time Tracking</h4><p>Track your flight status live, gate changes, and delays instantly.</p></div>
+    <div class="why-card"><i class='bx bxs-mobile' style="color:#a5d6a7"></i><h4>Mobile Friendly</h4><p>Fully responsive design works perfectly on any screen size.</p></div>
+    <div class="why-card"><i class='bx bxs-star' style="color:#ffcc02"></i><h4>Loyalty Program</h4><p>Earn SkyMiles on every flight and redeem for upgrades.</p></div>
+    <div class="why-card"><i class='bx bxs-headphone' style="color:#ce93d8"></i><h4>24/7 Support</h4><p>Our team is available round the clock to assist you.</p></div>
+  </div>
+</div>
+
+<!-- All Pages Link Section -->
+<div style="padding:0 32px 40px;max-width:960px;margin:0 auto;">
+  <h2 style="font-family:var(--font-display);font-size:1.6rem;margin-bottom:20px;">🗂 All System Pages</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+    <a href="index.html" class="feature-card"><i class='bx bxs-home'></i><h4>Landing Page</h4></a>
+    <a href="login.html" class="feature-card"><i class='bx bx-log-in'></i><h4>Login</h4></a>
+    <a href="register.html" class="feature-card"><i class='bx bxs-user-plus'></i><h4>Register</h4></a>
+    <a href="home.html" class="feature-card"><i class='bx bxs-dashboard'></i><h4>Home / Search</h4></a>
+    <a href="profile.html" class="feature-card"><i class='bx bxs-user-circle'></i><h4>My Profile</h4></a>
+    <a href="trips.html" class="feature-card"><i class='bx bxs-plane-take-off'></i><h4>My Trips</h4></a>
+    <a href="flights.html" class="feature-card"><i class='bx bxs-plane'></i><h4>Flight Results</h4></a>
+    <a href="booking.html" class="feature-card"><i class='bx bxs-purchase-tag'></i><h4>Book Flight</h4></a>
+    <a href="checkin.html" class="feature-card"><i class='bx bxs-id-card'></i><h4>Web Check-In</h4></a>
+    <a href="admin-login.html" class="feature-card"><i class='bx bxs-shield'></i><h4>Admin Login</h4></a>
+    <a href="admin.html" class="feature-card"><i class='bx bxs-cog'></i><h4>Admin Panel</h4></a>
+    <a href="forgot.html" class="feature-card"><i class='bx bxs-lock-open'></i><h4>Forgot Password</h4></a>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Ready to Fly?</h2>
+  <p>Join thousands of passengers who trust SkyWings for their journeys</p>
+  <a href="register.html" class="btn" style="background:#fff;color:var(--accent);font-size:1rem;padding:14px 36px;font-weight:800;border-radius:50px;">Get Started Free →</a>
+</div>
+
+<footer>© 2025 SkyWings Airline Management System | Team Project</footer>
+
+<style>
+.feature-card {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: #fff;
+  display: block;
+}
+.feature-card:hover { background: rgba(255,255,255,0.18); transform: translateY(-3px); }
+.feature-card i { font-size: 2rem; color: var(--accent); margin-bottom: 8px; display: block; }
+.feature-card h4 { font-size: 0.9rem; }
+</style>
+<script src="utils.js"></script>
+<script>initNavToggle();</script>
+</body>
+</html>

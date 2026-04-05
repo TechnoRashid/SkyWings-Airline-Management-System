@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – Forgot Password</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { display:flex; flex-direction:column; min-height:100vh; }
+.wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 16px; }
+.box { width:420px; background:transparent; border:2px solid rgba(255,255,255,0.3); backdrop-filter:blur(30px); box-shadow:0 8px 40px rgba(0,0,0,0.3); border-radius:20px; padding:40px; color:#fff; text-align:center; }
+.box h2 { font-family:var(--font-display); font-size:1.4rem; margin-bottom:8px; }
+.box p { font-size:0.85rem; opacity:0.7; margin-bottom:24px; }
+.btn-submit { width:100%; padding:13px; background:var(--accent); color:#fff; border:none; border-radius:70px; font-family:var(--font); font-size:1rem; font-weight:700; cursor:pointer; transition:background 0.25s; }
+.btn-submit:hover { background:#c0392b; }
+#fp-msg { font-size:0.85rem; min-height:22px; margin-bottom:10px; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+  <a href="login.html" style="font-size:0.85rem;color:#ffe082;">← Back to Login</a>
+</nav>
+<div class="wrap">
+  <div class="box">
+    <div style="font-size:3rem;color:#ffe082;margin-bottom:12px;"><i class='bx bxs-lock-open'></i></div>
+    <h2>Forgot Password?</h2>
+    <p>Enter your registered email and we'll send you a reset link.</p>
+    <div id="fp-msg"></div>
+    <div class="input-group" style="margin-bottom:18px;">
+      <i class='bx bx-envelope'></i>
+      <input type="email" id="fp-email" placeholder="Registered email address">
+    </div>
+    <button class="btn-submit" onclick="sendReset()"><i class='bx bx-send'></i> Send Reset Link</button>
+    <div style="margin-top:20px;font-size:0.85rem;opacity:0.7;">
+      <a href="login.html" style="color:#ffe082;">Remembered? Login →</a>
+    </div>
+  </div>
+</div>
+<footer>© 2025 SkyWings Airline Management System</footer>
+<script src="utils.js"></script>
+<script>
+function sendReset() {
+  const email = document.getElementById('fp-email').value.trim();
+  const msg = document.getElementById('fp-msg');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.style.color='#ff6b6b'; msg.textContent='Please enter a valid email address'; return;
+  }
+  msg.style.color='#ffe082';
+  msg.textContent='✅ Reset link sent to ' + email + ' (demo mode)';
+}
+</script>
+</body>
+</html>

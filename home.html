@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMS – Home</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { min-height: 100vh; }
+
+/* Background decorative planes */
+.bg-deco { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+.bg-deco span { position: absolute; font-size: 8rem; opacity: 0.04; animation: float 18s infinite; }
+.bg-deco span:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+.bg-deco span:nth-child(2) { top: 60%; right: 8%; animation-delay: 6s; }
+.bg-deco span:nth-child(3) { top: 80%; left: 40%; animation-delay: 12s; }
+@keyframes float { 0%,100%{transform:translateY(0) rotate(-15deg)} 50%{transform:translateY(-30px) rotate(-10deg)} }
+
+main { position: relative; z-index: 1; }
+
+.hero {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-bottom: 24px;
+}
+.hero p {
+  margin: 0 auto;
+  max-width: 720px;
+}
+
+/* Search form */
+.search-section {
+  padding: 32px 24px 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.search-box {
+  width: min(100%, 1080px);
+  max-width: 1080px;
+  margin: 0 auto 40px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+}
+.search-box h3 { font-size: 1rem; opacity: 0.8; margin-bottom: 22px; letter-spacing: 1px; text-transform: uppercase; }
+.search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; align-items: end; }
+.search-grid .btn { min-height: 54px; }
+.trip-tabs { justify-content: center; }
+
+/* Tab buttons for trip type */
+.trip-tabs { display: flex; gap: 12px; margin-bottom: 22px; }
+.trip-tab {
+  padding: 10px 22px; border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.4);
+  background: transparent; color: #fff; font-family: var(--font); font-size: 0.9rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.trip-tab.active, .trip-tab:hover { background: var(--accent); border-color: var(--accent); }
+
+/* Features row */
+.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 0 24px 40px; }
+.feature-card {
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  text-decoration: none; color: #fff;
+}
+.feature-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.18); }
+.feature-card i { font-size: 2.4rem; color: var(--accent); margin-bottom: 10px; }
+.feature-card h4 { font-size: 1rem; margin-bottom: 4px; }
+.feature-card p { font-size: 0.8rem; opacity: 0.7; }
+
+/* Offers section */
+.offers { padding: 0 24px 40px; }
+.offers h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 24px; }
+.offers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.offer-card {
+  border-radius: 18px;
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+.offer-card:nth-child(1) { background: linear-gradient(135deg,#ff6b35,#f7c59f); }
+.offer-card:nth-child(2) { background: linear-gradient(135deg,#1e90ff,#00c6ff); }
+.offer-card:nth-child(3) { background: linear-gradient(135deg,#8e2de2,#4a00e0); }
+.offer-card h4 { font-size: 1.14rem; font-weight: 700; }
+.offer-card p { font-size: 0.84rem; opacity: 0.88; margin: 8px 0; }
+.offer-badge { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.25); border-radius: 50px; padding: 4px 14px; font-size: 0.78rem; font-weight: 700; }
+
+/* Popular routes */
+.routes { padding: 0 24px 46px; }
+.routes h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 24px; }
+.routes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+.route-card {
+  background-color: rgba(16, 35, 61, 0.35);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 18px;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  min-height: 240px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.route-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+}
+.route-overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.56));
+  padding: 24px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  z-index: 2;
+}
+.route-icon { font-size: 1.8rem; display: none; }
+.route-info h5 { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.route-info p { font-size: 0.78rem; opacity: 0.95; color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <span>✈</span><span>✈</span><span>✈</span>
+</div>
+
+<!-- US007: Navbar with all required links -->
+<nav class="navbar">
+  <div class="nav-brand"><i class='bx bxs-plane-alt'></i> SkyWings AMS</div>
+
+  <button class="nav-toggle" id="nav-toggle"><i class='bx bx-menu'></i></button>
+
+  <div class="nav-links" id="nav-links">
+
+    <a href="home.html" class="active"><i class='bx bxs-home'></i> Home</a>
+    <a href="profile.html"><i class='bx bxs-user-circle'></i> My Profile</a>
+    <a href="trips.html"><i class='bx bxs-plane-take-off'></i> My Trips</a>
+    <a href="admin.html"><i class='bx bxs-dashboard'></i> Admin</a>
+    <a href="login.html" onclick="AMS.logout();return false;"><i class='bx bx-log-out'></i> Logout</a>
+  </div>
+
+  <!-- US007: Welcome message right corner -->
+  <div class="nav-welcome" id="nav-welcome">Welcome !!!</div>
+</nav>
+
+<main>
+  <!-- Hero -->
+  <div class="hero">
+    <h1>✈ SkyWings Airline Management</h1>
+    <p>Your journey begins here — book, manage, and explore flights with ease</p>
+  </div>
+
+  <!-- US007: Search form -->
+  <div class="search-section">
+    <div class="search-box">
+      <div class="trip-tabs">
+        <button class="trip-tab active" onclick="setTab(this,'one')">One Way</button>
+        <button class="trip-tab" onclick="setTab(this,'round')">Round Trip</button>
+        <button class="trip-tab" onclick="setTab(this,'multi')">Multi-City</button>
+      </div>
+      <h3><i class='bx bx-search'></i> Search Flights</h3>
+      <div class="search-grid">
+        <!-- Origin -->
+        <div class="input-group">
+          <i class='bx bxs-map'></i>
+          <input list="location-list" id="origin" placeholder="Origin / City or Airport">
+        </div>
+        <!-- Destination -->
+        <div class="input-group">
+          <i class='bx bxs-map-pin'></i>
+          <input list="location-list" id="destination" placeholder="Destination / City or Airport">
+        </div>
+        <!-- Departure -->
+        <div class="input-group">
+          <i class='bx bxs-calendar'></i>
+          <input type="date" id="departure" placeholder="Departure">
+        </div>
+        <!-- Return (hidden by default) -->
+        <div class="input-group hide" id="return-wrap">
+          <i class='bx bxs-calendar-check'></i>
+          <input type="date" id="returnDate" placeholder="Return">
+        </div>
+        <!-- Travellers -->
+        <div class="input-group">
+          <i class='bx bxs-group'></i>
+          <input type="number" id="travellers" placeholder="Travellers" min="1" max="9" value="1">
+        </div>
+        <!-- Class -->
+        <div class="input-group">
+          <i class='bx bxs-star'></i>
+          <select id="travelClass">
+            <option value="">Class</option>
+            <option>Economy</option>
+            <option>Executive</option>
+            <option>Business</option>
+          </select>
+        </div>
+        <!-- Search button -->
+        <button class="btn btn-primary" onclick="doSearch()">
+          <i class='bx bx-search-alt'></i> Search Flights
+        </button>
+      </div>
+      <div id="search-msg" class="search-msg"></div>
+      <datalist id="location-list">
+        <option value="Mumbai (BOM)"></option>
+        <option value="Delhi (DEL)"></option>
+        <option value="Bangalore (BLR)"></option>
+        <option value="Chennai (MAA)"></option>
+        <option value="Kolkata (CCU)"></option>
+        <option value="Hyderabad (HYD)"></option>
+        <option value="Pune (PNQ)"></option>
+        <option value="Ahmedabad (AMD)"></option>
+        <option value="Dubai (DXB)"></option>
+        <option value="Singapore (SIN)"></option>
+        <option value="London (LHR)"></option>
+        <option value="New York (JFK)"></option>
+      </datalist>
+    </div>
+  </div>
+
+  <!-- Feature shortcuts -->
+  <div class="features">
+    <a class="feature-card" href="booking.html">
+      <i class='bx bxs-plane-take-off'></i>
+      <h4>Book Flight</h4>
+      <p>Search & book your next journey</p>
+    </a>
+    <a class="feature-card" href="checkin.html">
+      <i class='bx bxs-id-card'></i>
+      <h4>Web Check-In</h4>
+      <p>Skip the airport queue</p>
+    </a>
+    <a class="feature-card" href="trips.html">
+      <i class='bx bxs-map-alt'></i>
+      <h4>My Trips</h4>
+      <p>View all your bookings</p>
+    </a>
+    <a class="feature-card" href="profile.html">
+      <i class='bx bxs-user-circle'></i>
+      <h4>My Profile</h4>
+      <p>Manage your account</p>
+    </a>
+    <a class="feature-card" href="flights.html">
+      <i class='bx bxs-time'></i>
+      <h4>Flight Status</h4>
+      <p>Real-time flight tracking</p>
+    </a>
+    <a class="feature-card" href="admin.html">
+      <i class='bx bxs-cog'></i>
+      <h4>Admin Panel</h4>
+      <p>Manage airline operations</p>
+    </a>
+  </div>
+
+  <!-- Offers -->
+  <div class="offers">
+    <h2>🎉 Exclusive Offers</h2>
+    <div class="offers-grid">
+      <div class="offer-card">
+        <span class="offer-badge">FLAT 30% OFF</span>
+        <h4>Weekend Getaway</h4>
+        <p>Mumbai → Goa | This weekend only</p>
+        <p><strong>From ₹2,499</strong></p>
+      </div>
+      <div class="offer-card">
+        <span class="offer-badge">EARLY BIRD</span>
+        <h4>International Deals</h4>
+        <p>India → Dubai | Book 30 days ahead</p>
+        <p><strong>From ₹12,999</strong></p>
+      </div>
+      <div class="offer-card">
+        <span class="offer-badge">BUSINESS</span>
+        <h4>Upgrade Experience</h4>
+        <p>Business class at Executive price</p>
+        <p><strong>Limited seats</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popular Routes -->
+  <div class="routes">
+    <h2>🔥 Popular Routes</h2>
+    <div class="routes-grid">
+      <div class="route-card" style="background-image: url('https://images.unsplash.com/photo-1587135941948-670b381f08ce?auto=format&fit=crop&w=800&q=80');"><div class="route-overlay"><div class="route-info"><h5>Mumbai → Delhi</h5><p>From ₹3,499 | 2h 15m</p></div></div></div>
+      <div class="route-card" style="background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=800&q=80');"><div class="route-overlay"><div class="route-info"><h5>Delhi → Goa</h5><p>From ₹4,299 | 2h 45m</p></div></div></div>
+      <div class="route-card" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80');"><div class="route-overlay"><div class="route-info"><h5>Mumbai → Dubai</h5><p>From ₹13,499 | 3h 10m</p></div></div></div>
+      <div class="route-card" style="background-image: url('https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=800&q=80');"><div class="route-overlay"><div class="route-info"><h5>Delhi → Singapore</h5><p>From ₹18,999 | 5h 30m</p></div></div></div>
+      <div class="route-card" style="background-image: url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80');"><div class="route-overlay"><div class="route-info"><h5>Bangalore → London</h5><p>From ₹42,999 | 10h 45m</p></div></div></div>
+      <div class="route-card" style="background-image: url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80');"><div class="route-overlay"><div class="route-info"><h5>Mumbai → New York</h5><p>From ₹58,999 | 16h 20m</p></div></div></div>
+    </div>
+  </div>
+</main>
+
+<footer>© 2025 SkyWings Airline Management System | Built with ❤️</footer>
+
+<script src="utils.js"></script>
+<script>
+AMS.guard();
+loadNavUser();
+initNavToggle();
+
+// Set min date to today
+document.getElementById('departure').min = new Date().toISOString().split('T')[0];
+
+document.getElementById('returnDate').min = document.getElementById('departure').min;
+
+function loadSavedSearch() {
+  const search = AMS.get('search');
+  if (search && (search.org || search.dst || search.dep || search.cls)) {
+    document.getElementById('origin').value = search.org || '';
+    document.getElementById('destination').value = search.dst || '';
+    document.getElementById('departure').value = search.dep || '';
+    document.getElementById('returnDate').value = search.returnDate || '';
+    document.getElementById('travellers').value = search.travellers || '1';
+    document.getElementById('travelClass').value = search.cls || '';
+    document.getElementById('search-msg').textContent = '';
+    if (search.returnDate) {
+      const roundBtn = document.querySelector("button[onclick*='round']");
+      if (roundBtn) setTab(roundBtn, 'round');
+    }
+  } else {
+    resetSearchFields();
+  }
+}
+
+function resetSearchFields() {
+  document.getElementById('origin').value = '';
+  document.getElementById('destination').value = '';
+  document.getElementById('departure').value = '';
+  document.getElementById('returnDate').value = '';
+  document.getElementById('travellers').value = '1';
+  document.getElementById('travelClass').value = '';
+  document.getElementById('search-msg').textContent = '';
+}
+
+loadSavedSearch();
+
+function setTab(btn, type) {
+  document.querySelectorAll('.trip-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const returnWrap = document.getElementById('return-wrap');
+  if (type === 'round') {
+    returnWrap.classList.remove('hide');
+  } else {
+    returnWrap.classList.add('hide');
+    document.getElementById('returnDate').value = '';
+  }
+}
+
+function doSearch() {
+  const org = document.getElementById('origin').value.trim();
+  const dst = document.getElementById('destination').value.trim();
+  const dep = document.getElementById('departure').value;
+  const cls = document.getElementById('travelClass').value;
+  const returnDate = document.getElementById('returnDate').value;
+  const returnWrap = document.getElementById('return-wrap');
+  const msg = document.getElementById('search-msg');
+
+  if (!org) { msg.textContent = '⚠ Please enter Origin'; return; }
+  if (!dst) { msg.textContent = '⚠ Please enter Destination'; return; }
+  if (org.toLowerCase() === dst.toLowerCase()) { msg.textContent = '⚠ Both origin and destination can\'t be same'; return; }
+  if (!dep) { msg.textContent = '⚠ Please select Departure date'; return; }
+  if (!cls) { msg.textContent = '⚠ Please choose a travel class'; return; }
+  if (!returnWrap.classList.contains('hide') && !returnDate) {
+    msg.textContent = '⚠ Please select a return date for round-trip'; return;
+  }
+
+  msg.textContent = '';
+  AMS.save('search', {
+    org,
+    dst,
+    dep,
+    returnDate: returnDate || '',
+    travellers: document.getElementById('travellers').value,
+    cls
+  });
+  window.location.href = 'flights.html';
+}
+</script>
+</body>
+</html>
